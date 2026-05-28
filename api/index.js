@@ -1,6 +1,7 @@
-const { app, start } = require('../src/server');
+const server = require('../src/server');
 
-let readyPromise = start();
+const app = server.app || server;
+let readyPromise = server.start ? server.start() : Promise.resolve(app);
 
 module.exports = async (req, res) => {
   await readyPromise;

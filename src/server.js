@@ -31,6 +31,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(upload.any());
 app.use('/assets', express.static(path.join(__dirname, '..', 'public')));
 app.use('/uploads', express.static(store.uploadDir));
+app.use(async (req, res, next) => {
+  try {
+    await store.ready();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 app.use(session({
   store: sessionStore,
   secret: process.env.SESSION_SECRET || 'sportshopfitness-local-secret',
@@ -817,7 +825,7 @@ app.post('/admin/products/:id/status', requireRole('admin'), (req, res) => {
 });
 
 app.get('/healthz', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'ok', storage: store.status() });
 });
 
 app.use((req, res) => {
@@ -842,4 +850,6 @@ if (require.main === module) {
     });
 }
 
-module.exports = { app, start };
+module.exports = app;
+module.exports.app = app;
+module.exports.start = start;

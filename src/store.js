@@ -16,6 +16,7 @@ let cachedDb = null;
 let pool = null;
 let pendingPersist = Promise.resolve();
 let readyPromise = null;
+let storageStatus = { mode: 'starting', error: null };
 
 const nowIso = () => new Date().toISOString();
 const id = (prefix) => `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
@@ -431,6 +432,18 @@ function postgresSsl() {
     : undefined;
 }
 
+function useFileFallback(error) {
+  pool = null;
+  cachedDb = loadFileDb();
+  if (normalizeDb(cachedDb)) {
+    fs.writeFileSync(dbFile, JSON.stringify(cachedDb, null, 2), 'utf8');
+  }
+  storageStatus = {
+    mode: 'file-fallback',
+    error: error ? error.message : null
+  };
+}
+
 async function persistPostgres() {
   if (!pool || !cachedDb) return;
   const snapshot = cloneDb(cachedDb);
@@ -459,37 +472,45 @@ async function initialize() {
   if (!databaseUrl) {
     cachedDb = loadFileDb();
     if (normalizeDb(cachedDb)) write(cachedDb);
+    storageStatus = { mode: 'file', error: null };
     return;
   }
 
-  pool = new Pool({
-    connectionString: databaseUrl,
-    ssl: postgresSsl(),
-    max: 5
-  });
+  try {
+    pool = new Pool({
+      connectionString: databaseUrl,
+      ssl: postgresSsl(),
+      max: 1,
+      connectionTimeoutMillis: 8000
+    });
 
-  await pool.query(`
-    create table if not exists app_state (
-      id text primary key,
-      data jsonb not null,
-      updated_at timestamptz not null default now()
-    )
-  `);
+    await pool.query(`
+      create table if not exists app_state (
+        id text primary key,
+        data jsonb not null,
+        updated_at timestamptz not null default now()
+      )
+    `);
 
-  const existing = await pool.query('select data from app_state where id = $1', [stateKey]);
-  if (existing.rowCount) {
-    cachedDb = existing.rows[0].data;
-  } else {
-    cachedDb = loadFileDb();
-    normalizeDb(cachedDb);
-    await pool.query(
-      'insert into app_state (id, data, updated_at) values ($1, $2::jsonb, now())',
-      [stateKey, cachedDb]
-    );
-  }
+    const existing = await pool.query('select data from app_state where id = $1', [stateKey]);
+    if (existing.rowCount) {
+      cachedDb = existing.rows[0].data;
+    } else {
+      cachedDb = loadFileDb();
+      normalizeDb(cachedDb);
+      await pool.query(
+        'insert into app_state (id, data, updated_at) values ($1, $2::jsonb, now())',
+        [stateKey, cachedDb]
+      );
+    }
 
-  if (normalizeDb(cachedDb)) {
-    await persistPostgres();
+    if (normalizeDb(cachedDb)) {
+      await persistPostgres();
+    }
+    storageStatus = { mode: 'postgres', error: null };
+  } catch (error) {
+    console.error(`PostgreSQL init failed, using file fallback: ${error.message}`);
+    useFileFallback(error);
   }
 }
 
@@ -543,5 +564,6 @@ module.exports = {
   nowIso,
   userWithProfile,
   profileFor,
-  productWithSeller
+  productWithSeller,
+  status: () => storageStatus
 };
