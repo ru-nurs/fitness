@@ -6,23 +6,37 @@ const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const PDFDocument = require('pdfkit');
 const store = require('./store');
+const PgSession = require('connect-pg-simple')(session);
 
 const app = express();
 const port = process.env.PORT || 3000;
 const upload = multer({ dest: path.join(store.uploadDir, 'attachments') });
+const databaseUrl = process.env.DATABASE_URL || '';
+const sessionStore = databaseUrl ? new PgSession({
+  conObject: {
+    connectionString: databaseUrl,
+    ssl: databaseUrl.includes('supabase.com') || databaseUrl.includes('pooler.supabase.com')
+      ? { rejectUnauthorized: false }
+      : undefined
+  },
+  tableName: 'user_sessions',
+  createTableIfMissing: true
+}) : undefined;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.urlencoded({ extended: true }));
 app.use(upload.any());
 app.use('/assets', express.static(path.join(__dirname, '..', 'public')));
 app.use('/uploads', express.static(store.uploadDir));
 app.use(session({
+  store: sessionStore,
   secret: process.env.SESSION_SECRET || 'sportshopfitness-local-secret',
   resave: false,
   saveUninitialized: false,
-  cookie: { httpOnly: true, sameSite: 'lax', maxAge: 1000 * 60 * 60 * 8 }
+  cookie: { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', maxAge: 1000 * 60 * 60 * 8 }
 }));
 
 app.use((req, res, next) => {
@@ -802,17 +816,30 @@ app.post('/admin/products/:id/status', requireRole('admin'), (req, res) => {
   res.redirect('/admin');
 });
 
+app.get('/healthz', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 app.use((req, res) => {
   res.status(404).render('error', { title: 'Страница не найдена', message: 'Раздел еще не создан или адрес указан неверно.' });
 });
 
-store.ready()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`SportShopFitness running at http://localhost:${port}`);
+async function start() {
+  await store.ready();
+  return app;
+}
+
+if (require.main === module) {
+  start()
+    .then(() => {
+      app.listen(port, () => {
+        console.log(`SportShopFitness running at http://localhost:${port}`);
+      });
+    })
+    .catch((error) => {
+      console.error(`Failed to initialize storage: ${error.message}`);
+      process.exit(1);
     });
-  })
-  .catch((error) => {
-    console.error(`Failed to initialize storage: ${error.message}`);
-    process.exit(1);
-  });
+}
+
+module.exports = { app, start };

@@ -4,11 +4,13 @@
   "description": "SportShopFitness marketplace MVP for fitness trainers, products, courses, services, and referrals.",
   "main": "src/server.js",
   "scripts": {
+    "check": "node --check src/server.js && node --check src/store.js && node --check public/app.js && node --check api/index.js",
     "start": "node src/server.js",
     "dev": "node --watch src/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-pg-simple": "^10.0.0",
     "dotenv": "^17.4.2",
     "ejs": "^3.1.10",
     "express": "^4.19.2",

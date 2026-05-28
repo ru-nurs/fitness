@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 require('dotenv').config({ quiet: true });
 const { Pool } = require('pg');
@@ -6,7 +7,7 @@ const bcrypt = require('bcryptjs');
 
 const rootDir = path.join(__dirname, '..');
 const dataDir = path.join(rootDir, 'data');
-const uploadDir = path.join(rootDir, 'uploads');
+const uploadDir = process.env.VERCEL ? path.join(os.tmpdir(), 'fitness-uploads') : path.join(rootDir, 'uploads');
 const dbFile = path.join(dataDir, 'db.json');
 const databaseUrl = process.env.DATABASE_URL || '';
 const stateKey = process.env.APP_STATE_KEY || 'sportshopfitness';
@@ -14,6 +15,7 @@ const stateKey = process.env.APP_STATE_KEY || 'sportshopfitness';
 let cachedDb = null;
 let pool = null;
 let pendingPersist = Promise.resolve();
+let readyPromise = null;
 
 const nowIso = () => new Date().toISOString();
 const id = (prefix) => `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
@@ -447,6 +449,12 @@ async function persistPostgres() {
 }
 
 async function ready() {
+  if (readyPromise) return readyPromise;
+  readyPromise = initialize();
+  return readyPromise;
+}
+
+async function initialize() {
   ensureDb();
   if (!databaseUrl) {
     cachedDb = loadFileDb();
