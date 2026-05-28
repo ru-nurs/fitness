@@ -1,5 +1,13 @@
 {
   "version": 2,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": [
+        "src/views/**",
+        "data/db.json"
+      ]
+    }
+  },
   "rewrites": [
     { "source": "/assets/:path*", "destination": "/:path*" },
     { "source": "/(.*)", "destination": "/api" }
