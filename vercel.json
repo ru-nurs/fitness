@@ -2,10 +2,7 @@
   "version": 2,
   "functions": {
     "api/index.js": {
-      "includeFiles": [
-        "src/views/**",
-        "data/db.json"
-      ]
+      "includeFiles": "{src/views/**,data/db.json}"
     }
   },
   "rewrites": [
