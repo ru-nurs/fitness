@@ -1,0 +1,63 @@
+<%- include('partials/head') %>
+<main class="workspace standalone">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">SportShopFitness</p>
+      <h1>Каталог маркетплейса</h1>
+      <p class="muted-text">Курсы, программы тренировок, пакеты питания, услуги тренеров, сертификаты и товары для спорта.</p>
+    </div>
+  </div>
+
+  <form class="filters marketplace-filters" action="/catalog" method="get">
+    <input name="q" value="<%= query.q || '' %>" placeholder="Поиск по товарам, услугам, тренерам">
+    <select name="category">
+      <option value="">Все категории</option>
+      <% categories.forEach(category => { %>
+        <option value="<%= category %>" <%= query.category === category ? 'selected' : '' %>><%= category %></option>
+      <% }) %>
+    </select>
+    <select name="type">
+      <option value="">Все типы</option>
+      <% types.forEach(type => { %>
+        <option value="<%= type %>" <%= query.type === type ? 'selected' : '' %>><%= type %></option>
+      <% }) %>
+    </select>
+    <select name="sort">
+      <option value="">По умолчанию</option>
+      <option value="price_asc" <%= query.sort === 'price_asc' ? 'selected' : '' %>>Сначала дешевле</option>
+      <option value="price_desc" <%= query.sort === 'price_desc' ? 'selected' : '' %>>Сначала дороже</option>
+    </select>
+    <button class="btn primary" type="submit">Найти</button>
+  </form>
+
+  <section class="product-grid catalog-grid">
+    <% products.forEach(product => { %>
+      <article class="product-card">
+        <a href="/products/<%= product.id %>">
+          <img src="<%= product.image_url %>" alt="<%= product.title %>">
+          <div class="product-body">
+            <span class="pill"><%= product.category %> · <%= product.type %></span>
+            <h3><%= product.title %></h3>
+            <p><%= product.short_description %></p>
+            <div class="tag-row">
+              <% product.tags.slice(0, 3).forEach(tag => { %><small>#<%= tag %></small><% }) %>
+            </div>
+            <div class="product-meta">
+              <strong><%= money(product.price) %></strong>
+              <small><%= product.marketplace === 'trainer' ? product.sellerProfile.full_name : 'SportShopFitness' %></small>
+            </div>
+          </div>
+        </a>
+      </article>
+    <% }) %>
+  </section>
+
+  <% if (!products.length) { %>
+    <section class="panel empty-state">
+      <h2>Ничего не найдено</h2>
+      <p>Попробуйте убрать часть фильтров или открыть полный каталог.</p>
+      <a class="btn primary" href="/catalog">Сбросить фильтры</a>
+    </section>
+  <% } %>
+</main>
+<%- include('partials/end') %>

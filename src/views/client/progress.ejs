@@ -1,0 +1,39 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/client_nav') %>
+  <section class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Дневник</p><h1>Прогресс</h1></div></div>
+    <div class="grid two">
+      <section class="panel">
+        <h2>Добавить замеры</h2>
+        <form action="/client/progress" method="post" enctype="multipart/form-data" class="stack-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <label>Дата<input name="report_date" type="date" value="<%= new Date().toISOString().slice(0, 10) %>" required></label>
+          <label>Вес, кг<input name="weight" type="number" step="0.1" required></label>
+          <div class="form-row"><label>Талия<input name="waist" type="number"></label><label>Бедра<input name="hips" type="number"></label></div>
+          <div class="form-row"><label>Грудь<input name="chest" type="number"></label><label>Руки<input name="arms" type="number"></label></div>
+          <label>Ноги<input name="legs" type="number"></label>
+          <label>Фото до<input name="photo_before" type="file" accept="image/*"></label>
+          <label>Фото после<input name="photo_after" type="file" accept="image/*"></label>
+          <label>Комментарий<textarea name="notes"></textarea></label>
+          <button class="btn primary" type="submit">Сохранить</button>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Динамика</h2>
+        <div class="chart-bars">
+          <% const maxWeight = Math.max(...progress.map(p => Number(p.weight)), 1); progress.forEach(item => { %>
+            <div><span style="height:<%= Math.max(12, (Number(item.weight) / maxWeight) * 160) %>px"></span><small><%= item.weight %> кг<br><%= item.report_date.slice(5) %></small></div>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+    <section class="panel">
+      <h2>История замеров</h2>
+      <div class="table-wrap"><table><thead><tr><th>Дата</th><th>Вес</th><th>Талия</th><th>Бедра</th><th>Комментарий</th></tr></thead><tbody>
+        <% progress.forEach(item => { %><tr><td><%= item.report_date %></td><td><%= item.weight %></td><td><%= item.measurements.waist || '-' %></td><td><%= item.measurements.hips || '-' %></td><td><%= item.notes %></td></tr><% }) %>
+      </tbody></table></div>
+    </section>
+  </section>
+</main>
+<%- include('../partials/end') %>

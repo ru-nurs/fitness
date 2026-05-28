@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-label="SportShopFitness">
+  <rect width="640" height="420" fill="#f1f5f9"/>
+  <path d="M160 250h320v24H160zM220 170h200v28H220z" fill="#00a86b"/>
+  <circle cx="320" cy="130" r="44" fill="#2c3e50"/>
+  <text x="320" y="335" text-anchor="middle" font-family="Arial" font-size="28" fill="#2c3e50">SportShopFitness</text>
+</svg>

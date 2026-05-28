@@ -1,0 +1,31 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/client_nav') %>
+  <section class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Программа</p><h1>Мои тренировки</h1></div></div>
+    <% if (program) { %>
+      <section class="panel"><h2><%= program.program.name %></h2><p><%= program.program.description %></p><p>Период: <%= program.assignment.assigned_at %> - <%= program.assignment.expires_at %></p></section>
+      <% program.workouts.forEach(workout => { %>
+        <section class="panel">
+          <h2><%= workout.day_label %> · <%= workout.name %></h2>
+          <p><%= workout.description %></p>
+          <div class="exercise-grid">
+            <% workout.exercises.forEach(item => { %>
+              <article class="exercise-card">
+                <img src="<%= item.exercise?.image_url || '/assets/placeholder.svg' %>" alt="">
+                <div>
+                  <strong><%= item.exercise?.name || 'Упражнение' %></strong>
+                  <small><%= item.exercise?.muscle_group || '' %></small>
+                  <p><%= item.sets %> подхода · <%= item.reps %> повторений · отдых <%= item.rest_seconds %> сек</p>
+                  <p><%= item.exercise?.technique || item.exercise?.description || '' %></p>
+                  <% if (item.video_url || item.exercise?.video_url) { %><a href="<%= item.video_url || item.exercise.video_url %>" target="_blank">Видео</a><% } %>
+                </div>
+              </article>
+            <% }) %>
+          </div>
+        </section>
+      <% }) %>
+    <% } else { %><section class="panel"><p>Программа пока не назначена.</p></section><% } %>
+  </section>
+</main>
+<%- include('../partials/end') %>

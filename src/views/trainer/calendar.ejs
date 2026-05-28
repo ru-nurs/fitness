@@ -1,0 +1,38 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/trainer_nav') %>
+  <section class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Планирование</p><h1>Календарь</h1></div></div>
+    <div class="grid two">
+      <section class="panel">
+        <h2>Новое событие</h2>
+        <form action="/trainer/events" method="post" class="stack-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <label>Название<input name="title" value="Персональная тренировка" required></label>
+          <label>Тип<select name="event_type"><option>Тренировка с клиентом</option><option>Консультация</option><option>Занятие в группе</option></select></label>
+          <label>Клиент<select name="client_id"><% clients.forEach(client => { %><option value="<%= client.user_id %>"><%= client.full_name %></option><% }) %></select></label>
+          <label>Начало<input name="start_time" type="datetime-local" required></label>
+          <label>Конец<input name="end_time" type="datetime-local" required></label>
+          <button class="btn primary" type="submit">Создать</button>
+        </form>
+      </section>
+      <section class="panel calendar-panel">
+        <h2>Расписание</h2>
+        <div class="timeline">
+          <% events.forEach(event => { %>
+            <article>
+              <span><%= formatDate(event.start_time) %></span>
+              <strong><%= event.title %></strong>
+              <small><%= event.event_type %> · <%= event.status %></small>
+              <div class="row-actions">
+                <form action="/trainer/events/<%= event.id %>/done" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="link-button" type="submit">Проведено</button></form>
+                <form action="/trainer/events/<%= event.id %>/copy" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="link-button" type="submit">Копировать +7 дней</button></form>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+<%- include('../partials/end') %>

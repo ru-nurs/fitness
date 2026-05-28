@@ -1,0 +1,506 @@
+{
+  "meta": {
+    "project": "sportshopfitness.ru",
+    "source": "ТЗ от 25 мая 2026",
+    "marketplace_commission_percent": 18,
+    "yandex_market_mode": "FBS / DBS"
+  },
+  "users": [
+    {
+      "id": "user_trainer_demo",
+      "email": "trainer@sportshopfitness.local",
+      "password_hash": "$2a$10$a3yi23iJHtXPabNaqJRYDOwqx3OMqaCM9Yxq8WGz1SiMdN9K7joSu",
+      "role": "trainer",
+      "is_blocked": false,
+      "created_at": "2026-05-28T19:11:25.606Z"
+    },
+    {
+      "id": "user_client_demo",
+      "email": "client@sportshopfitness.local",
+      "password_hash": "$2a$10$3gkrYf0olUh.hIIwDBawpeY7IAHKQoOoaYLIJs8DEpMkg6IB1J1uy",
+      "role": "client",
+      "is_blocked": false,
+      "created_at": "2026-05-28T19:11:25.606Z"
+    },
+    {
+      "id": "user_admin_demo",
+      "email": "admin@sportshopfitness.local",
+      "password_hash": "$2a$10$vHiyjx9dIzCLESO1V2iOo.EXa3KlrzA/.i48zlUZyXCzK/HXaIN42",
+      "role": "admin",
+      "is_blocked": false,
+      "created_at": "2026-05-28T19:11:25.606Z"
+    }
+  ],
+  "profiles": [
+    {
+      "user_id": "user_trainer_demo",
+      "full_name": "Мария Волкова",
+      "phone": "+7 777 100 20 30",
+      "city": "Алматы",
+      "specialization": "Силовой тренинг и коррекция питания",
+      "avatar_url": "https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=500&q=80",
+      "rating": 4.9,
+      "referral_code": "MARIAFIT",
+      "balance": 38600
+    },
+    {
+      "user_id": "user_client_demo",
+      "full_name": "Алексей Иванов",
+      "phone": "+7 777 555 12 34",
+      "city": "Астана",
+      "specialization": "",
+      "avatar_url": "",
+      "rating": 0,
+      "referral_code": "",
+      "balance": 0
+    },
+    {
+      "user_id": "user_admin_demo",
+      "full_name": "Администратор SportShopFitness",
+      "phone": "",
+      "city": "",
+      "specialization": "",
+      "avatar_url": "",
+      "rating": 0,
+      "referral_code": "",
+      "balance": 0
+    }
+  ],
+  "products": [
+    {
+      "id": "product_bundle_start",
+      "owner_id": "user_admin_demo",
+      "title": "Пакет Старт тренера",
+      "type": "bundle",
+      "category": "Пакеты",
+      "price": 24900,
+      "old_price": 31900,
+      "stock": 999,
+      "status": "active",
+      "marketplace": "platform",
+      "image_url": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=85",
+      "short_description": "Готовый набор: курс продаж, шаблоны программ, чек-листы питания и материалы для клиентов.",
+      "description": "Бандл для фитнес-тренера, который хочет быстро запустить продажи программ и услуг: образовательные уроки, PDF-материалы, шаблоны тренировок, скрипты консультаций и базовые маркетинговые связки.",
+      "tags": [
+        "курс",
+        "шаблоны",
+        "для тренера"
+      ],
+      "yandex_sync": "ready"
+    },
+    {
+      "id": "product_nutrition_pro",
+      "owner_id": "user_admin_demo",
+      "title": "Пакет питания PRO",
+      "type": "digital",
+      "category": "Питание",
+      "price": 9900,
+      "old_price": 12900,
+      "stock": 999,
+      "status": "active",
+      "marketplace": "platform",
+      "image_url": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=85",
+      "short_description": "Рационы, таблицы замены продуктов, калькулятор калорийности и инструкции для клиентов.",
+      "description": "Цифровой продукт для тренеров и клиентов: недельные меню, расчет БЖУ, список покупок, корректировки под цели и готовые рекомендации.",
+      "tags": [
+        "питание",
+        "БЖУ",
+        "калькулятор"
+      ],
+      "yandex_sync": "ready"
+    },
+    {
+      "id": "product_trainer_course",
+      "owner_id": "user_trainer_demo",
+      "title": "Авторский курс: силовой старт за 8 недель",
+      "type": "course",
+      "category": "Курсы",
+      "price": 15900,
+      "old_price": 0,
+      "stock": 999,
+      "status": "active",
+      "marketplace": "trainer",
+      "image_url": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=85",
+      "short_description": "Курс от тренера маркетплейса с видео, дневником прогресса и проверкой техники.",
+      "description": "Программа тренировок для новичков и возвращающихся после перерыва. Включает 24 тренировки, технику упражнений, календарь нагрузок и чат-поддержку.",
+      "tags": [
+        "силовой тренинг",
+        "программа",
+        "видео"
+      ],
+      "yandex_sync": "queued"
+    },
+    {
+      "id": "product_cert_card",
+      "owner_id": "user_admin_demo",
+      "title": "Подарочный сертификат SportShopFitness",
+      "type": "certificate",
+      "category": "Сертификаты",
+      "price": 20000,
+      "old_price": 0,
+      "stock": 250,
+      "status": "active",
+      "marketplace": "platform",
+      "image_url": "https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=1200&q=85",
+      "short_description": "Сертификат на покупку курсов, программ, консультаций и товаров для спорта.",
+      "description": "Электронный сертификат, который можно применить к товарам маркетплейса, программам тренеров и сопутствующим услугам.",
+      "tags": [
+        "подарок",
+        "сертификат"
+      ],
+      "yandex_sync": "ready"
+    },
+    {
+      "id": "product_gear_kit",
+      "owner_id": "user_admin_demo",
+      "title": "Набор для домашних тренировок",
+      "type": "physical",
+      "category": "Товары",
+      "price": 34900,
+      "old_price": 38900,
+      "stock": 34,
+      "status": "active",
+      "marketplace": "platform",
+      "image_url": "https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=1200&q=85",
+      "short_description": "Эспандеры, коврик, ролл, петли и инструкция с готовыми тренировками.",
+      "description": "Сопутствующий товар для клиентов тренеров: комплект инвентаря с доставкой и цифровой программой на 4 недели.",
+      "tags": [
+        "инвентарь",
+        "дом",
+        "доставка"
+      ],
+      "yandex_sync": "synced"
+    },
+    {
+      "id": "product_consulting",
+      "owner_id": "user_trainer_demo",
+      "title": "Разбор техники и план на месяц",
+      "type": "service",
+      "category": "Услуги",
+      "price": 12000,
+      "old_price": 0,
+      "stock": 12,
+      "status": "active",
+      "marketplace": "trainer",
+      "image_url": "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=1200&q=85",
+      "short_description": "Онлайн-консультация тренера, видеоразбор и индивидуальный план тренировок.",
+      "description": "Покупатель отправляет видео упражнений, получает разбор ошибок, план тренировок, рекомендации по нагрузке и контрольную встречу.",
+      "tags": [
+        "услуга",
+        "разбор",
+        "онлайн"
+      ],
+      "yandex_sync": "manual"
+    }
+  ],
+  "orders": [
+    {
+      "id": "order_1001",
+      "customer_id": "user_client_demo",
+      "product_id": "product_bundle_start",
+      "seller_id": "user_admin_demo",
+      "amount": 24900,
+      "status": "paid",
+      "source": "site",
+      "created_at": "2026-05-28T19:11:25.606Z"
+    },
+    {
+      "id": "order_1002",
+      "customer_id": "user_client_demo",
+      "product_id": "product_trainer_course",
+      "seller_id": "user_trainer_demo",
+      "amount": 15900,
+      "status": "paid",
+      "source": "referral:MARIAFIT",
+      "created_at": "2026-05-28T19:11:25.606Z"
+    },
+    {
+      "id": "order_mppvg676_e0zyas",
+      "customer_id": "user_client_demo",
+      "product_id": "product_nutrition_pro",
+      "seller_id": "user_admin_demo",
+      "amount": 9900,
+      "status": "paid",
+      "source": "site",
+      "created_at": "2026-05-28T19:14:05.538Z"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "sub_base",
+      "name": "Base",
+      "price_month": 0,
+      "price_year": 0,
+      "access": "Каталог, покупки, базовые материалы"
+    },
+    {
+      "id": "sub_pro",
+      "name": "Pro Trainer",
+      "price_month": 9900,
+      "price_year": 99000,
+      "access": "Витрина тренера, рефералка, CRM клиентов, аналитика"
+    },
+    {
+      "id": "sub_business",
+      "name": "Business",
+      "price_month": 29900,
+      "price_year": 299000,
+      "access": "Командная работа, расширенная аналитика, приоритетная модерация"
+    }
+  ],
+  "referrals": [
+    {
+      "id": "ref_1",
+      "trainer_id": "user_trainer_demo",
+      "customer_id": "user_client_demo",
+      "order_id": "order_1002",
+      "reward": 3180,
+      "status": "approved",
+      "created_at": "2026-05-28T19:11:25.606Z"
+    }
+  ],
+  "payout_requests": [
+    {
+      "id": "payout_1",
+      "trainer_id": "user_trainer_demo",
+      "amount": 15000,
+      "status": "pending",
+      "method": "Карта",
+      "created_at": "2026-05-28T19:11:25.606Z"
+    }
+  ],
+  "market_sync": [
+    {
+      "id": "sync_1",
+      "channel": "Яндекс.Маркет",
+      "mode": "FBS",
+      "status": "ready",
+      "updated_at": "2026-05-28T19:11:25.606Z",
+      "comment": "Каталог подготовлен к выгрузке цен и остатков."
+    },
+    {
+      "id": "sync_2",
+      "channel": "Яндекс.Маркет",
+      "mode": "DBS",
+      "status": "queued",
+      "updated_at": "2026-05-28T19:11:25.606Z",
+      "comment": "Ожидает настройки склада и статусов заказов."
+    }
+  ],
+  "clients": [
+    {
+      "id": "client_card_1",
+      "trainer_id": "user_trainer_demo",
+      "customer_id": "user_client_demo",
+      "goal": "Минус 6 кг и укрепление спины",
+      "progress": "Вес -1.4 кг за 2 недели",
+      "next_session": "2026-06-02",
+      "status": "active",
+      "notes": "",
+      "birth_date": ""
+    }
+  ],
+  "content_library": [
+    {
+      "id": "content_1",
+      "title": "Библиотека упражнений с видео",
+      "type": "library",
+      "items": 120
+    },
+    {
+      "id": "content_2",
+      "title": "Блог и статьи FitnesAkademiya",
+      "type": "blog",
+      "items": 48
+    },
+    {
+      "id": "content_3",
+      "title": "Калькуляторы ИМТ и калорийности",
+      "type": "calculator",
+      "items": 4
+    }
+  ],
+  "news": [
+    {
+      "id": "news_1",
+      "title": "SportShopFitness MVP",
+      "text": "Платформа собирается как маркетплейс товаров, услуг, курсов и инструментов для фитнес-тренеров.",
+      "created_at": "2026-05-28T19:11:25.606Z"
+    },
+    {
+      "id": "news_2",
+      "title": "Комиссия маркетплейса",
+      "text": "Тренеры могут размещать свои программы и получать выплаты после модерации заказов.",
+      "created_at": "2026-05-28T19:11:25.606Z"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "exercise_squat",
+      "owner_id": null,
+      "name": "Приседание с собственным весом",
+      "muscle_group": "Ноги",
+      "image_url": "https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=900&q=80",
+      "video_url": "",
+      "description": "Базовое упражнение для ног и корпуса.",
+      "technique": "Спина нейтральная, колени направлены по линии стоп, движение начинается с таза.",
+      "is_public": true
+    },
+    {
+      "id": "exercise_pushup",
+      "owner_id": null,
+      "name": "Отжимания",
+      "muscle_group": "Грудь и руки",
+      "image_url": "https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=900&q=80",
+      "video_url": "",
+      "description": "Жимовое упражнение для верхней части тела.",
+      "technique": "Корпус держится одной линией, локти движутся под комфортным углом.",
+      "is_public": true
+    },
+    {
+      "id": "exercise_plank",
+      "owner_id": null,
+      "name": "Планка",
+      "muscle_group": "Кор",
+      "image_url": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&q=80",
+      "video_url": "",
+      "description": "Статическая работа для стабилизаторов корпуса.",
+      "technique": "Не проваливайте поясницу, держите плечи над локтями и ровное дыхание.",
+      "is_public": true
+    }
+  ],
+  "programs": [
+    {
+      "id": "program_start_strength",
+      "trainer_id": "user_trainer_demo",
+      "name": "Силовой старт на 4 недели",
+      "description": "Демо-программа для мягкого входа в регулярные тренировки.",
+      "duration_days": 28,
+      "workouts": [
+        {
+          "id": "workout_start_1",
+          "day_label": "День 1",
+          "name": "Фулбоди база",
+          "description": "Разминка, техника базовых движений и спокойная силовая работа.",
+          "exercises": [
+            {
+              "exercise_id": "exercise_squat",
+              "sets": 3,
+              "reps": "10",
+              "rest_seconds": 60,
+              "video_url": ""
+            },
+            {
+              "exercise_id": "exercise_pushup",
+              "sets": 3,
+              "reps": "8-10",
+              "rest_seconds": 75,
+              "video_url": ""
+            },
+            {
+              "exercise_id": "exercise_plank",
+              "sets": 3,
+              "reps": "30 сек",
+              "rest_seconds": 45,
+              "video_url": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "program_assignments": [
+    {
+      "id": "assignment_demo",
+      "trainer_id": "user_trainer_demo",
+      "client_id": "user_client_demo",
+      "program_id": "program_start_strength",
+      "assigned_at": "2026-05-28",
+      "expires_at": "2026-06-30",
+      "status": "active"
+    }
+  ],
+  "progress_reports": [
+    {
+      "id": "progress_1",
+      "trainer_id": "user_trainer_demo",
+      "client_id": "user_client_demo",
+      "report_date": "2026-05-12",
+      "weight": 82.4,
+      "measurements": {
+        "waist": 92,
+        "hips": 102,
+        "chest": 101,
+        "arms": 35,
+        "legs": 58
+      },
+      "photo_before": "",
+      "photo_after": "",
+      "notes": "Стартовые замеры перед программой.",
+      "created_at": "2026-05-28T21:19:39.457Z"
+    },
+    {
+      "id": "progress_2",
+      "trainer_id": "user_trainer_demo",
+      "client_id": "user_client_demo",
+      "report_date": "2026-05-26",
+      "weight": 81,
+      "measurements": {
+        "waist": 90,
+        "hips": 101,
+        "chest": 101,
+        "arms": 35,
+        "legs": 58
+      },
+      "photo_before": "",
+      "photo_after": "",
+      "notes": "Хорошая динамика, нагрузку можно слегка поднять.",
+      "created_at": "2026-05-28T21:19:39.457Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "payment_demo",
+      "trainer_id": "user_trainer_demo",
+      "client_id": "user_client_demo",
+      "amount": 15900,
+      "payment_date": "2026-05-28",
+      "payment_method": "Карта",
+      "comment": "Оплата курса силового старта",
+      "created_at": "2026-05-28T21:19:39.457Z"
+    }
+  ],
+  "calendar_events": [
+    {
+      "id": "event_demo",
+      "trainer_id": "user_trainer_demo",
+      "client_id": "user_client_demo",
+      "title": "Контрольная тренировка",
+      "event_type": "Тренировка с клиентом",
+      "start_time": "2026-06-02T10:00",
+      "end_time": "2026-06-02T11:00",
+      "status": "planned",
+      "created_at": "2026-05-28T21:19:39.457Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "message_1",
+      "trainer_id": "user_trainer_demo",
+      "sender_id": "user_trainer_demo",
+      "recipient_id": "user_client_demo",
+      "message_text": "Алексей, привет! Сегодня держим спокойный темп и следим за техникой приседа.",
+      "file_attachment": "",
+      "created_at": "2026-05-28T21:19:39.457Z"
+    },
+    {
+      "id": "message_2",
+      "trainer_id": "user_trainer_demo",
+      "sender_id": "user_client_demo",
+      "recipient_id": "user_trainer_demo",
+      "message_text": "Принял, после тренировки пришлю ощущения и замеры.",
+      "file_attachment": "",
+      "created_at": "2026-05-28T21:19:39.457Z"
+    }
+  ]
+}

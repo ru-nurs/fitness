@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> · SportShopFitness</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">SF</span>
+      <span>SportShopFitness</span>
+    </a>
+    <nav class="topnav">
+      <a href="/catalog">Каталог</a>
+      <% if (currentUser) { %>
+        <a href="/<%= currentUser.role %>">Кабинет</a>
+        <form action="/logout" method="post" class="inline-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="link-button" type="submit">Выйти</button>
+        </form>
+      <% } else { %>
+        <a href="/login?role=client">Покупатель</a>
+        <a href="/login?role=trainer">Тренер</a>
+      <% } %>
+    </nav>
+  </header>
+  <% if (flash) { %>
+    <div class="flash <%= flash.type %>"><%= flash.text %></div>
+  <% } %>

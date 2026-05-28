@@ -1,0 +1,51 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/trainer_nav') %>
+  <section class="workspace">
+    <div class="page-head">
+      <div><p class="eyebrow">CRM</p><h1>Клиенты</h1></div>
+      <a class="btn ghost" href="/trainer/clients/export">Экспорт CSV</a>
+    </div>
+    <section class="panel">
+      <form class="filters" method="get">
+        <input name="q" placeholder="Поиск по имени" value="<%= query.q || '' %>">
+        <select name="status">
+          <option value="">Все статусы</option>
+          <option value="active" <%= query.status === 'active' ? 'selected' : '' %>>Активен</option>
+          <option value="paused" <%= query.status === 'paused' ? 'selected' : '' %>>На паузе</option>
+          <option value="archived" <%= query.status === 'archived' ? 'selected' : '' %>>Архив</option>
+        </select>
+        <select name="sort">
+          <option value="name">По имени</option>
+          <option value="status" <%= query.sort === 'status' ? 'selected' : '' %>>По статусу</option>
+        </select>
+        <button class="btn small" type="submit">Фильтр</button>
+      </form>
+    </section>
+    <div class="grid two">
+      <section class="panel">
+        <h2>Добавить клиента</h2>
+        <form action="/trainer/clients" method="post" class="stack-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <label>ФИО<input name="full_name" required></label>
+          <label>Email<input name="email" type="email" required></label>
+          <label>Телефон<input name="phone" required></label>
+          <label>Дата рождения<input name="birth_date" type="date"></label>
+          <label>Статус<select name="status"><option value="active">Активен</option><option value="paused">На паузе</option><option value="archived">Архив</option></select></label>
+          <label>Пароль по умолчанию<input name="password" value="password123"></label>
+          <label>Заметки<textarea name="notes"></textarea></label>
+          <button class="btn primary" type="submit">Сохранить</button>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Список клиентов</h2>
+        <div class="compact-list">
+          <% clients.forEach(client => { %>
+            <a href="/trainer/clients/<%= client.user_id %>"><span><%= client.full_name %><small><%= client.email %></small></span><em class="badge"><%= client.status %></em></a>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+<%- include('../partials/end') %>

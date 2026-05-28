@@ -1,0 +1,107 @@
+<%- include('partials/head') %>
+<main>
+  <section class="hero market-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Маркетплейс для фитнес-тренеров</p>
+      <h1>SportShopFitness: товары, курсы и услуги для спортивного бизнеса</h1>
+      <p>Витрина в формате Ozon, Wildberries и Avito для фитнес-ниши: тренеры продают программы и консультации, клиенты покупают курсы, пакеты питания, сертификаты и сопутствующие товары.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="/catalog">Смотреть каталог</a>
+        <a class="btn ghost" href="/login?role=trainer">Стать продавцом</a>
+      </div>
+    </div>
+    <div class="hero-market-panel">
+      <strong>Что собираем по ТЗ</strong>
+      <span>Интернет-магазин</span>
+      <span>Маркетплейс тренеров</span>
+      <span>Подписки и бандлы</span>
+      <span>Реферальная программа</span>
+      <span>ЮKassa / СБП / Тинькофф</span>
+      <span>Яндекс.Маркет FBS / DBS</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow">Каталог</p>
+      <h2>Одна витрина для цифровых продуктов, услуг и спортивных товаров</h2>
+    </div>
+    <div class="product-grid">
+      <% products.forEach(product => { %>
+        <article class="product-card">
+          <a href="/products/<%= product.id %>">
+            <img src="<%= product.image_url %>" alt="<%= product.title %>">
+            <div class="product-body">
+              <span class="pill"><%= product.category %></span>
+              <h3><%= product.title %></h3>
+              <p><%= product.short_description %></p>
+              <div class="product-meta">
+                <strong><%= money(product.price) %></strong>
+                <% if (product.marketplace === 'trainer') { %><small>от тренера</small><% } else { %><small>платформа</small><% } %>
+              </div>
+            </div>
+          </a>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section muted">
+    <div class="section-head">
+      <p class="eyebrow">Бандлы</p>
+      <h2>Пакетные предложения для быстрого запуска продаж</h2>
+    </div>
+    <div class="pricing">
+      <% bundles.forEach(bundle => { %>
+        <article class="price-card accent">
+          <h3><%= bundle.title %></h3>
+          <p class="price"><%= money(bundle.price) %></p>
+          <p><%= bundle.short_description %></p>
+          <a class="btn small" href="/products/<%= bundle.id %>">Открыть</a>
+        </article>
+      <% }) %>
+      <% subscriptions.slice(1).forEach(plan => { %>
+        <article class="price-card">
+          <h3><%= plan.name %></h3>
+          <p class="price"><%= money(plan.price_month) %>/мес</p>
+          <p><%= plan.access %></p>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="split">
+      <div>
+        <p class="eyebrow">Инструменты тренера</p>
+        <h2>Кабинет продавца не теряет CRM-часть, но центр продукта — продажи</h2>
+      </div>
+      <div class="feature-grid compact">
+        <article class="feature"><i data-feather="shopping-bag"></i><h3>Своя витрина</h3><p>Тренер загружает программы, курсы, услуги и проходит модерацию.</p></article>
+        <article class="feature"><i data-feather="repeat"></i><h3>Рефералка</h3><p>Ссылка тренера, начисления за покупки и заявки на вывод средств.</p></article>
+        <article class="feature"><i data-feather="users"></i><h3>Клиенты</h3><p>База клиентов, прогресс, календарь и чат остаются внутри рабочего кабинета.</p></article>
+        <article class="feature"><i data-feather="truck"></i><h3>Яндекс.Маркет</h3><p>Задел под синхронизацию цен, остатков и заказов FBS / DBS.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section muted">
+    <div class="section-head">
+      <p class="eyebrow">Контент</p>
+      <h2>Блог, библиотека упражнений и калькуляторы как трафик и польза</h2>
+    </div>
+    <div class="stats">
+      <% library.forEach(item => { %>
+        <article><span><%= item.type %></span><strong><%= item.items %></strong><p><%= item.title %></p></article>
+      <% }) %>
+      <article><span>AI</span><strong>2 этап</strong><p>Помощник для генерации программ можно добавить после MVP.</p></article>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <span>SportShopFitness.ru</span>
+  <a href="mailto:hello@sportshopfitness.ru">hello@sportshopfitness.ru</a>
+  <a href="/catalog">Каталог</a>
+  <a href="/login?role=trainer">Кабинет тренера</a>
+</footer>
+<%- include('partials/end') %>

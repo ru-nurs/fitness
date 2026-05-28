@@ -1,0 +1,56 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/trainer_nav') %>
+  <section class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Конструктор</p><h1>Программы тренировок</h1></div></div>
+    <section class="panel">
+      <h2>Создать программу</h2>
+      <form action="/trainer/programs" method="post" class="stack-form program-builder">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-row">
+          <label>Название<input name="name" required></label>
+          <label>Длительность, дней<input name="duration_days" type="number" value="28"></label>
+        </div>
+        <label>Описание<textarea name="description"></textarea></label>
+        <div class="form-row">
+          <label>День/цикл<input name="day_label" value="День 1"></label>
+          <label>Название тренировки<input name="workout_name" value="Силовая тренировка"></label>
+        </div>
+        <label>Описание тренировки<textarea name="workout_description"></textarea></label>
+        <div id="exerciseRows" class="builder-rows">
+          <div class="builder-row" draggable="true">
+            <select name="exercise_id"><% exercises.forEach(ex => { %><option value="<%= ex.id %>"><%= ex.name %></option><% }) %></select>
+            <input name="sets" type="number" value="3" title="Подходы">
+            <input name="reps" value="10" title="Повторы">
+            <input name="rest_seconds" type="number" value="60" title="Отдых">
+            <input name="video_url" placeholder="Видео">
+          </div>
+        </div>
+        <button class="btn ghost" type="button" data-add-exercise>Добавить упражнение</button>
+        <button class="btn primary" type="submit">Сохранить программу</button>
+      </form>
+    </section>
+    <section class="panel">
+      <h2>Готовые программы</h2>
+      <div class="program-list">
+        <% programs.forEach(program => { %>
+          <article class="program-card">
+            <div><h3><%= program.name %></h3><p><%= program.description %></p><small><%= program.duration_days %> дней · <%= program.workouts.length %> тренировок</small></div>
+            <form action="/trainer/programs/<%= program.id %>/assign" method="post" class="assign-form">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <select name="client_id"><% clients.forEach(client => { %><option value="<%= client.user_id %>"><%= client.full_name %></option><% }) %></select>
+              <input name="assigned_at" type="date" value="<%= new Date().toISOString().slice(0, 10) %>">
+              <input name="expires_at" type="date">
+              <button class="btn small" type="submit">Назначить</button>
+            </form>
+            <form action="/trainer/programs/<%= program.id %>/delete" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button class="link-button danger" type="submit">Удалить</button>
+            </form>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  </section>
+</main>
+<%- include('../partials/end') %>

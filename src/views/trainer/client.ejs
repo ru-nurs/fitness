@@ -1,0 +1,51 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/trainer_nav') %>
+  <section class="workspace">
+    <div class="page-head">
+      <div><p class="eyebrow">Карточка клиента</p><h1><%= member.full_name %></h1></div>
+      <a class="btn ghost" href="/trainer/reports/<%= member.user_id %>.pdf">Скачать PDF</a>
+    </div>
+    <div class="grid two">
+      <section class="panel">
+        <h2>Профиль</h2>
+        <form action="/trainer/clients/<%= member.user_id %>" method="post" class="stack-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <label>ФИО<input name="full_name" value="<%= member.full_name %>" required></label>
+          <label>Email<input name="email" value="<%= member.email %>" required></label>
+          <label>Телефон<input name="phone" value="<%= member.phone %>" required></label>
+          <label>Дата рождения<input name="birth_date" type="date" value="<%= member.birth_date %>"></label>
+          <label>Статус<select name="status"><option value="active" <%= member.status === 'active' ? 'selected' : '' %>>Активен</option><option value="paused" <%= member.status === 'paused' ? 'selected' : '' %>>На паузе</option><option value="archived" <%= member.status === 'archived' ? 'selected' : '' %>>Архив</option></select></label>
+          <label>Заметки<textarea name="notes"><%= member.notes %></textarea></label>
+          <button class="btn primary" type="submit">Обновить</button>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Текущая программа</h2>
+        <% if (program) { %>
+          <p><strong><%= program.program.name %></strong></p>
+          <p><%= program.program.description %></p>
+          <div class="compact-list">
+            <% program.workouts.forEach(workout => { %>
+              <span><%= workout.day_label %> · <%= workout.name %></span>
+            <% }) %>
+          </div>
+        <% } else { %><p>Программа еще не назначена.</p><% } %>
+        <h2>Последние замеры</h2>
+        <div class="compact-list">
+          <% progress.slice(-4).forEach(item => { %>
+            <span><%= item.report_date %> · <%= item.weight %> кг · талия <%= item.measurements.waist || '-' %> см</span>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+    <section class="panel">
+      <h2>История платежей и событий</h2>
+      <div class="table-wrap"><table><thead><tr><th>Тип</th><th>Дата</th><th>Описание</th><th>Сумма/статус</th></tr></thead><tbody>
+        <% payments.forEach(pay => { %><tr><td>Оплата</td><td><%= pay.payment_date %></td><td><%= pay.comment %></td><td><%= money(pay.amount) %></td></tr><% }) %>
+        <% events.forEach(event => { %><tr><td>Событие</td><td><%= formatDate(event.start_time) %></td><td><%= event.title %></td><td><%= event.status %></td></tr><% }) %>
+      </tbody></table></div>
+    </section>
+  </section>
+</main>
+<%- include('../partials/end') %>

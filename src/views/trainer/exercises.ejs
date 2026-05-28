@@ -1,0 +1,38 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/trainer_nav') %>
+  <section class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Каталог</p><h1>Упражнения</h1></div></div>
+    <section class="panel">
+      <h2>Добавить собственное упражнение</h2>
+      <form action="/trainer/exercises" method="post" class="inline-grid">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input name="name" placeholder="Название" required>
+        <input name="muscle_group" placeholder="Группа мышц" required>
+        <input name="image_url" placeholder="URL изображения">
+        <input name="video_url" placeholder="YouTube URL">
+        <textarea name="description" placeholder="Описание" required></textarea>
+        <textarea name="technique" placeholder="Техника выполнения"></textarea>
+        <button class="btn primary" type="submit">Добавить</button>
+      </form>
+    </section>
+    <section class="panel">
+      <h2>Мои упражнения</h2>
+      <div class="exercise-grid">
+        <% ownExercises.forEach(ex => { %>
+          <article class="exercise-card"><img src="<%= ex.image_url || '/assets/placeholder.svg' %>" alt=""><div><strong><%= ex.name %></strong><small><%= ex.muscle_group %></small><p><%= ex.description %></p></div></article>
+        <% }) %>
+        <% if (!ownExercises.length) { %><p>Собственных упражнений пока нет.</p><% } %>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Публичный каталог: <%= publicExercises.length %> упражнений</h2>
+      <div class="exercise-grid">
+        <% publicExercises.forEach(ex => { %>
+          <article class="exercise-card"><img src="<%= ex.image_url %>" alt=""><div><strong><%= ex.name %></strong><small><%= ex.muscle_group %></small><p><%= ex.description %></p></div></article>
+        <% }) %>
+      </div>
+    </section>
+  </section>
+</main>
+<%- include('../partials/end') %>

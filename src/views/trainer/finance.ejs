@@ -1,0 +1,42 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/trainer_nav') %>
+  <section class="workspace">
+    <div class="page-head">
+      <div><p class="eyebrow">Учет</p><h1>Финансы</h1></div>
+      <a class="btn ghost" href="/trainer/finance/export">Экспорт CSV</a>
+    </div>
+    <div class="stats"><article><span>Итого за период</span><strong><%= money(total) %></strong></article><article><span>Транзакции</span><strong><%= payments.length %></strong></article></div>
+    <div class="grid two">
+      <section class="panel">
+        <h2>Добавить оплату</h2>
+        <form action="/trainer/payments" method="post" class="stack-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <label>Клиент<select name="client_id"><% clients.forEach(client => { %><option value="<%= client.user_id %>"><%= client.full_name %></option><% }) %></select></label>
+          <label>Сумма<input name="amount" type="number" min="0" required></label>
+          <label>Дата<input name="payment_date" type="date" value="<%= new Date().toISOString().slice(0, 10) %>" required></label>
+          <label>Способ оплаты<input name="payment_method" value="Карта"></label>
+          <label>Комментарий<textarea name="comment"></textarea></label>
+          <button class="btn primary" type="submit">Сохранить</button>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Фильтр отчета</h2>
+        <form method="get" class="stack-form">
+          <label>С<input type="date" name="from" value="<%= query.from || '' %>"></label>
+          <label>По<input type="date" name="to" value="<%= query.to || '' %>"></label>
+          <button class="btn ghost" type="submit">Показать</button>
+        </form>
+      </section>
+    </div>
+    <section class="panel">
+      <h2>История оплат</h2>
+      <div class="table-wrap"><table><thead><tr><th>Клиент</th><th>Дата</th><th>Метод</th><th>Комментарий</th><th>Сумма</th></tr></thead><tbody>
+        <% payments.forEach(pay => { const client = clients.find(c => c.user_id === pay.client_id); %>
+          <tr><td><%= client ? client.full_name : 'Клиент' %></td><td><%= pay.payment_date %></td><td><%= pay.payment_method %></td><td><%= pay.comment %></td><td><%= money(pay.amount) %></td></tr>
+        <% }) %>
+      </tbody></table></div>
+    </section>
+  </section>
+</main>
+<%- include('../partials/end') %>

@@ -1,0 +1,55 @@
+<%- include('partials/head') %>
+<main class="workspace standalone">
+  <section class="product-detail">
+    <div class="detail-media">
+      <img src="<%= product.image_url %>" alt="<%= product.title %>">
+    </div>
+    <div class="detail-copy">
+      <span class="pill"><%= product.category %> · <%= product.type %></span>
+      <h1><%= product.title %></h1>
+      <p><%= product.description %></p>
+      <div class="detail-price">
+        <strong><%= money(product.price) %></strong>
+        <% if (product.old_price) { %><span><%= money(product.old_price) %></span><% } %>
+      </div>
+      <div class="seller-box">
+        <i data-feather="user-check"></i>
+        <div>
+          <strong><%= product.marketplace === 'trainer' ? product.sellerProfile.full_name : 'SportShopFitness' %></strong>
+          <p><%= product.marketplace === 'trainer' ? product.sellerProfile.specialization : 'Официальная витрина платформы' %></p>
+        </div>
+      </div>
+      <form action="/orders" method="post" class="buy-box">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input type="hidden" name="product_id" value="<%= product.id %>">
+        <input name="referral_code" placeholder="Реферальный код тренера, если есть">
+        <button class="btn primary" type="submit">Купить демо</button>
+      </form>
+      <div class="tag-row">
+        <% product.tags.forEach(tag => { %><small>#<%= tag %></small><% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section class="section embedded">
+    <div class="section-head">
+      <p class="eyebrow">Сопутствующее</p>
+      <h2>Кросс-селлинг внутри категории</h2>
+    </div>
+    <div class="product-grid">
+      <% related.forEach(item => { %>
+        <article class="product-card">
+          <a href="/products/<%= item.id %>">
+            <img src="<%= item.image_url %>" alt="<%= item.title %>">
+            <div class="product-body">
+              <span class="pill"><%= item.category %></span>
+              <h3><%= item.title %></h3>
+              <div class="product-meta"><strong><%= money(item.price) %></strong><small>открыть</small></div>
+            </div>
+          </a>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+</main>
+<%- include('partials/end') %>

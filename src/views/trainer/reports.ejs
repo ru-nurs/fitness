@@ -1,0 +1,23 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/trainer_nav') %>
+  <section class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Аналитика</p><h1>Отчеты</h1></div></div>
+    <section class="panel">
+      <h2>Прогресс клиентов</h2>
+      <div class="report-grid">
+        <% clients.forEach(client => { const progress = db.progress_reports.filter(p => p.client_id === client.user_id).sort((a,b) => a.report_date.localeCompare(b.report_date)); const first = progress[0]; const last = progress[progress.length - 1]; %>
+          <article class="report-card">
+            <h3><%= client.full_name %></h3>
+            <% if (first && last) { %>
+              <p>Вес: <strong><%= first.weight %> → <%= last.weight %> кг</strong></p>
+              <p>Талия: <strong><%= first.measurements.waist || '-' %> → <%= last.measurements.waist || '-' %> см</strong></p>
+            <% } else { %><p>Недостаточно замеров.</p><% } %>
+            <a class="btn small" href="/trainer/reports/<%= client.user_id %>.pdf">PDF-отчет</a>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  </section>
+</main>
+<%- include('../partials/end') %>

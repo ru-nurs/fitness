@@ -1,0 +1,124 @@
+<%- include('../partials/head') %>
+<main class="workspace standalone">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Кабинет тренера-продавца</p>
+      <h1>Витрина, продажи, рефералы и клиенты</h1>
+      <p class="muted-text">Комиссия платформы по демо-настройке: <%= commission %>%.</p>
+    </div>
+    <a class="btn primary" href="/catalog">Открыть каталог</a>
+  </div>
+
+  <section class="stats">
+    <article><span>Товаров</span><strong><%= products.length %></strong><p>Активные и на модерации</p></article>
+    <article><span>Продажи</span><strong><%= money(revenue) %></strong><p>Оборот по товарам тренера</p></article>
+    <article><span>Баланс</span><strong><%= money(profile.balance) %></strong><p>Доступно к выводу</p></article>
+    <article><span>Рефералы</span><strong><%= referrals.length %></strong><p>Начисления за покупки</p></article>
+  </section>
+
+  <section class="grid two">
+    <div class="panel">
+      <h2>Добавить товар или услугу</h2>
+      <form class="stack-form" action="/trainer/products" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <label>Название
+          <input name="title" required placeholder="Например, Курс похудения за 6 недель">
+        </label>
+        <div class="form-row">
+          <label>Тип
+            <select name="type">
+              <option value="course">Курс</option>
+              <option value="digital">Цифровой продукт</option>
+              <option value="service">Услуга</option>
+              <option value="physical">Физический товар</option>
+            </select>
+          </label>
+          <label>Категория
+            <input name="category" required placeholder="Курсы, Услуги, Питание">
+          </label>
+        </div>
+        <div class="form-row">
+          <label>Цена
+            <input name="price" type="number" min="0" required placeholder="15900">
+          </label>
+          <label>Остаток/слоты
+            <input name="stock" type="number" min="1" value="999">
+          </label>
+        </div>
+        <label>Короткое описание
+          <input name="short_description" required placeholder="Что получает покупатель">
+        </label>
+        <label>Полное описание
+          <textarea name="description" required></textarea>
+        </label>
+        <label>Фото URL
+          <input name="image_url" placeholder="https://...">
+        </label>
+        <label>Теги через запятую
+          <input name="tags" placeholder="похудение, программа, видео">
+        </label>
+        <button class="btn primary" type="submit">Отправить на модерацию</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>Реферальная программа</h2>
+      <div class="ref-box">
+        <span>Ваш код</span>
+        <strong><%= profile.referral_code %></strong>
+        <small>Ссылка: sportshopfitness.ru/?ref=<%= profile.referral_code %></small>
+      </div>
+      <div class="compact-list">
+        <% referrals.forEach(ref => { %>
+          <span><span>Начисление <%= ref.order_id %><small><%= formatDate(ref.created_at) %></small></span><em><%= money(ref.reward) %></em></span>
+        <% }) %>
+      </div>
+      <form class="inline-grid payout-form" action="/trainer/payouts" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <label>Сумма
+          <input name="amount" type="number" min="1000" max="<%= profile.balance %>" placeholder="15000">
+        </label>
+        <label>Метод
+          <select name="method"><option>Карта</option><option>СБП</option></select>
+        </label>
+        <button class="btn primary" type="submit">Вывести</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="grid two">
+    <div class="panel">
+      <h2>Моя витрина</h2>
+      <div class="product-list">
+        <% products.forEach(product => { %>
+          <article>
+            <img src="<%= product.image_url %>" alt="<%= product.title %>">
+            <div>
+              <strong><%= product.title %></strong>
+              <p><%= product.short_description %></p>
+              <span class="pill"><%= product.status %></span>
+              <span class="pill"><%= product.yandex_sync %></span>
+            </div>
+            <em><%= money(product.price) %></em>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Заказы и клиенты</h2>
+      <div class="compact-list">
+        <% orders.forEach(order => { %>
+          <span>
+            <span><strong><%= order.product?.title %></strong><small><%= order.customerProfile?.full_name %> · <%= formatDate(order.created_at) %></small></span>
+            <em><%= money(order.amount) %></em>
+          </span>
+        <% }) %>
+        <% clients.forEach(client => { %>
+          <span><span><strong>CRM: <%= client.goal %></strong><small><%= client.progress %> · следующее занятие <%= client.next_session %></small></span><em>клиент</em></span>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/end') %>

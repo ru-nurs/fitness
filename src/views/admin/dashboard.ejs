@@ -1,0 +1,89 @@
+<%- include('../partials/head') %>
+<main class="workspace standalone">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Админка</p>
+      <h1>Управление маркетплейсом SportShopFitness</h1>
+    </div>
+    <a class="btn primary" href="/catalog">Проверить витрину</a>
+  </div>
+
+  <section class="stats">
+    <article><span>Пользователи</span><strong><%= users.length %></strong><p>Клиенты, тренеры, админы</p></article>
+    <article><span>Товары</span><strong><%= products.length %></strong><p>Платформа и продавцы</p></article>
+    <article><span>Заказы</span><strong><%= orders.length %></strong><p>Сайт и реферальные продажи</p></article>
+    <article><span>Подписки</span><strong><%= subscriptions.length %></strong><p>Тарифные планы</p></article>
+  </section>
+
+  <section class="grid two">
+    <div class="panel">
+      <h2>Модерация товаров</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Товар</th><th>Продавец</th><th>Цена</th><th>Статус</th><th></th></tr></thead>
+          <tbody>
+            <% products.forEach(product => { %>
+              <tr>
+                <td><strong><%= product.title %></strong><br><small><%= product.category %> · <%= product.type %></small></td>
+                <td><%= product.sellerProfile?.full_name || 'SportShopFitness' %></td>
+                <td><%= money(product.price) %></td>
+                <td><span class="pill"><%= product.status %></span></td>
+                <td>
+                  <form action="/admin/products/<%= product.id %>/status" method="post" class="status-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <select name="status">
+                      <option value="active">active</option>
+                      <option value="moderation">moderation</option>
+                      <option value="blocked">blocked</option>
+                    </select>
+                    <button class="btn small" type="submit">OK</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Яндекс.Маркет</h2>
+      <div class="compact-list">
+        <% marketSync.forEach(sync => { %>
+          <span>
+            <span><strong><%= sync.channel %> · <%= sync.mode %></strong><small><%= sync.comment %></small></span>
+            <em><%= sync.status %></em>
+          </span>
+        <% }) %>
+      </div>
+      <h2>Заявки на вывод</h2>
+      <div class="compact-list">
+        <% payouts.forEach(payout => { %>
+          <span><span><strong><%= payout.method %></strong><small><%= payout.status %> · <%= formatDate(payout.created_at) %></small></span><em><%= money(payout.amount) %></em></span>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Заказы</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Покупатель</th><th>Товар</th><th>Продавец</th><th>Источник</th><th>Сумма</th></tr></thead>
+        <tbody>
+          <% orders.forEach(order => { %>
+            <tr>
+              <td><%= order.id %></td>
+              <td><%= order.customerProfile?.full_name %></td>
+              <td><%= order.product?.title %></td>
+              <td><%= order.sellerProfile?.full_name || 'SportShopFitness' %></td>
+              <td><%= order.source %></td>
+              <td><%= money(order.amount) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<%- include('../partials/end') %>

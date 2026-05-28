@@ -1,0 +1,26 @@
+<%- include('../partials/head') %>
+<main class="app-shell">
+  <%- include('../partials/client_nav') %>
+  <section class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Связь</p><h1>Чат с тренером</h1></div></div>
+    <section class="panel chat-box full">
+      <h2><%= trainer.full_name %></h2>
+      <div class="messages">
+        <% messages.forEach(msg => { %>
+          <article class="<%= msg.sender_id === currentUser.id ? 'mine' : '' %>">
+            <p><%= msg.message_text %></p>
+            <% if (msg.file_attachment) { %><a href="<%= msg.file_attachment %>" target="_blank">Вложение</a><% } %>
+            <small><%= formatDate(msg.created_at) %></small>
+          </article>
+        <% }) %>
+      </div>
+      <form action="/client/chat" method="post" enctype="multipart/form-data" class="message-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input name="message_text" placeholder="Сообщение тренеру" required>
+        <input name="attachment" type="file">
+        <button class="btn primary" type="submit">Отправить</button>
+      </form>
+    </section>
+  </section>
+</main>
+<%- include('../partials/end') %>
